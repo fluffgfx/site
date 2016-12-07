@@ -27,9 +27,12 @@ if (production) {
   h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
 })(document);
 
+import * as reducers from './reducers'
+
 // redux store
 const store = createStore(
   combineReducers({
+    ...reducers,
     routing: routerReducer
   }),
   compose(
@@ -38,15 +41,17 @@ const store = createStore(
   )
 )
 
+window.store = store
+
 const history = syncHistoryWithStore(browserHistory, store)
+
+import Landing from './Landing'
+require('./globals.scss')
 
 render(
   <Provider store={store}>
     <Router history={history} onUpdate={onUpdate}>
-      <Route path='/' component={() => (<div>
-        <h1 style={{ fontFamily: 'didoni-urw', fontSize: '6em' }}>Kyle Fahringer</h1>
-        <h3 style={{ fontFamily: 'proxima-nova', fontSize: '3em'}}>Under construction</h3>
-      </div>)} />
+      <Route path='/' component={Landing} />
     </Router>
   </Provider>
 , document.getElementById('mount'))

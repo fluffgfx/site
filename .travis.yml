@@ -8,5 +8,5 @@ before_deploy:
 deploy:
   provider: surge
   project: ./build
-  domain: vulpine.me
+  domain: beta.vulpine.me
   skip_cleanup: true
