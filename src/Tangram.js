@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import bowser from 'bowser'
 
 import shapeTypes from './shapes'
 import bg from './bg.jpg'
@@ -47,13 +48,13 @@ const shapes = {
     [305, 125, 0]
   ],
   [shapeTypes.CAT]: [
-    [250, -500, 90], // big triangle 1
-    [251, -500, 90], // big triangle 2
-    [0, 0, 0], // square
-    [250, 0, 0], // small triangle 1
-    [0, -252, 0], // small triangle 2
-    [175, -75, 90], // medium triangle
-    [480, -625, 90], // paralellogram
+    [250, -500, 90],
+    [251, -500, 90],
+    [0, 0, 0],
+    [250, 0, 0],
+    [0, -252, 0],
+    [175, -75, 90],
+    [480, -625, 90],
     [35, 305, 0]
   ]
 }
@@ -68,6 +69,37 @@ export default class Logo extends Component {
     console.log(shape)
     const landscape = window.innerWidth > window.innerHeight
     const id = 'TangramMaskPath'
+    const ist = bowser.check({ chrome: "16" }, true) // inline style transform
+    const parentProps = ist ? {
+      style: {
+        transform: '' +
+          `scale(${(size - 40)/(landscape ? window.innerHeight : window.innerWidth)}) ` +
+          `translate(${shapes[shape][7][0]}px, ${shapes[shape][7][1]}px) ` +
+          `rotate(${shapes[shape][7][2]}deg)`,
+        transition: 'transform 0.25s ease-in-out'
+      }
+    } : {
+      transform: '' +
+        `scale(${(size - 40)/(landscape ? window.innerHeight : window.innerWidth)}) ` +
+        `translate(${shapes[shape][7][0]}, ${shapes[shape][7][1]}) ` +
+        `rotate(${shapes[shape][7][2]})`
+    }
+    const childPropsGenerator = (i, shape) => {
+      return ist ? {
+        style: {
+          transform: '' +
+            `rotate(${shape[2]}deg)` +
+            `translate(${shape[0]}px, ${shape[1]}px)` +
+            (shape[3] ? 'scale(-1, 1)' : 'scale(1, 1)'),
+          transition: `transform 0.5s ease-in-out ${i * 0.125}s`
+        }
+      } : {
+        transform: '' +
+          `rotate(${shape[2]})` +
+          `translate(${shape[0]}, ${shape[1]})` +
+          (shape[3] ? 'scale(-1, 1)' : 'scale(1, 1)')
+      }
+    }
     return (
       <svg
         style={{
@@ -80,23 +112,11 @@ export default class Logo extends Component {
             id={id}
             >
             <g
-              style={{
-                transform: '' +
-                  `scale(${(size - 40)/(landscape ? window.innerHeight : window.innerWidth)}) ` +
-                  `translate(${shapes[shape][7][0]}px, ${shapes[shape][7][1]}px) ` +
-                  `rotate(${shapes[shape][7][2]}deg)`,
-                transition: 'transform 0.25s ease-in-out'
-                }}>
+              {...parentProps}>
               {logostrings.map((l, i) => (
                 <g
                   key={`logoShape${i}`} 
-                  style={{
-                    transform: '' +
-                    `rotate(${shapes[shape][i][2]}deg)` +
-                    `translate(${shapes[shape][i][0]}px, ${shapes[shape][i][1]}px)` +
-                    (shapes[shape][i][3] ? 'scale(-1, 1)' : 'scale(1, 1)'),
-                    transition: `transform 0.5s ease-in-out ${i * 0.125}s`
-                  }}>
+                  {...childPropsGenerator(i, shapes[shape][i])}>
                   <path d={l.join('')} style={{ stroke: 'black', strokeWidth: '2px' }} fill='white'/>
                 </g>
               ))}
