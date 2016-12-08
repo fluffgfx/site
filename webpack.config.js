@@ -10,7 +10,7 @@ module.exports = {
     loaders: [
       {
         test: /\.scss$/,
-        loaders: ['style', 'css?modules', 'sass']
+        loaders: ['style', 'css?modules', 'postcss', 'sass']
       },
       {
         test: /\.js$/,
