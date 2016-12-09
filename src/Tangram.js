@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 
 import shapeTypes from './shapes'
-import bg from './bg.jpg'
 
 // logo as represented as separate shapes
 // don't ask why it's a bunch of arrays
@@ -24,7 +23,7 @@ const shapes = {
     [728.1, 436.1, 0], // small triangle 2
     [198.7, 561.5, 0], // medium triangle
     [249.5, 260.7, 0], // paralellogram
-    [-15, 0, 0]
+    [15, 15, 0]
   ],
   [shapeTypes.SQUARE]: [
     [-250, -250, 180],
@@ -34,7 +33,7 @@ const shapes = {
     [-375.5, 124, 270],
     [0, 707, 315],
     [375, -125, 90],
-    [230, 250, 0]
+    [275, 250, 0]
   ],
   [shapeTypes.RECTANGLE]: [
     [498, -1, 45],
@@ -44,30 +43,59 @@ const shapes = {
     [-250, -250, 225],
     [-175, -175, 180],
     [0, -250, 135, true],
-    [305, 125, 0]
+    [350, 125, 0]
   ],
   [shapeTypes.CAT]: [
-    [250, -500, 90], // big triangle 1
-    [251, -500, 90], // big triangle 2
-    [0, 0, 0], // square
-    [250, 0, 0], // small triangle 1
-    [0, -252, 0], // small triangle 2
-    [175, -75, 90], // medium triangle
-    [480, -625, 90], // paralellogram
-    [35, 305, 0]
+    [250, -500, 90],
+    [251, -500, 90],
+    [0, 0, 0],
+    [250, 0, 0],
+    [0, -252, 0],
+    [175, -75, 90],
+    [480, -625, 90],
+    [80, 305, 0]
   ]
 }
 
 export default class Logo extends Component {
   constructor (props) {
     super (props)
+    console.log(this.props)
+    this.state = {
+      shape: this.props.rotate ? this.props.shapes[0] : this.props.shape,
+      currentIndex: 0
+    }
+  }
+
+  componentDidMount () {
+    if (this.props.rotate) {
+      const rotator = () => {
+        setTimeout(() => {
+          this.setState({
+            shape: this.props.shapes[this.state.currentIndex + 1] || this.props.shapes[0],
+            currentIndex: this.props.shapes[this.state.currentIndex + 1] ? this.state.currentIndex + 1 : 0
+          })
+          rotator()
+        }, this.props.rotate)
+      }
+      rotator()
+    }
+  }
+
+  componentWillReceiveProps (nextProps) {
+    if (!this.props.rotate && nextProps.shape !== this.state.shape) {
+      this.setState({
+        shape: nextProps.shape
+      })
+    }
   }
 
   render () {
-    const { size, shape, ...props } = this.props
-    console.log(shape)
+    const { size, background, ...props } = this.props
+    const { shape } = this.state
     const landscape = window.innerWidth > window.innerHeight
     const id = 'TangramMaskPath'
+    if (!shape) return null
     return (
       <svg
         style={{
@@ -103,8 +131,8 @@ export default class Logo extends Component {
             </g>
           </mask>
         </defs>
-        <foreignObject x="0" y="0" mask={`url(#${id})`} width={size + 'px'} height={size * 1.03 + 'px'}>
-          <img src={bg} width={size + 'px'} height={size * 1.03 + 'px'}/>
+        <foreignObject x="-500" y="-50" mask={`url(#${id})`} width={size + 1000 + 'px'} height={size * 1.03 + 100 + 'px'} style={{ overflow: 'hidden' }}>
+          <img src={background} width={size + 1000 + 'px'} height={size * 1.03 + 100 + 'px'} style={{ display: 'block', width: '100%', height: 'auto' }}/>
         </foreignObject>
       </svg>
     )
