@@ -24,26 +24,35 @@ export class Wrapper extends Component {
   }
 
   componentDidMount () {
+    const scrollDown = () => {
+      this.setState({ transitionUp: false }, () => {
+        this.props.goToProject(this.props.params.id ? parseInt(this.props.params.id) + 1 : 0)
+      })
+    }
+
+    const scrollUp = () => {
+      this.setState({ transitionUp: true }, () => {
+        console.log('leaving up')
+        if (this.props.params.id) this.props.goToProject(parseInt(this.props.params.id) - 1)
+      })
+    }
+
     const handleScroll = (e) => {
       if (!this.state.scrollEnabled) return
       this.setState({ scrollEnabled: false })
       setTimeout(() => { this.setState({ scrollEnabled: true }) }, 500)
-      console.log('woah a scrol')
       if (e.deltaY > 0) {
-        this.setState({ transitionUp: false }, () => {
-          console.log('leaving down')
-          this.props.goToProject(this.props.params.id ? parseInt(this.props.params.id) + 1 : 0)
-        })
+        scrollDown()
       } else if (e.deltaY < 0) {
-        this.setState({ transitionUp: true }, () => {
-          console.log('leaving up')
-          if (this.props.params.id) this.props.goToProject(parseInt(this.props.params.id) - 1)
-        })
+        scrollUp()
       }
     }
+
     window.addEventListener('wheel', handleScroll)
     window.addEventListener('scrollwheel', handleScroll)
     this.setState({ scrollEnabled: true })
+
+    // TODO handle touchmove event
   }
 
   render () {
