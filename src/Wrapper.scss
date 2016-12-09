@@ -1,0 +1,75 @@
+.menuBarLink {
+  font-family: 'Proxima Nova W01';
+  font-weight: 200;
+  font-size: 1.5em;
+  text-decoration: none;
+  margin-right: 50px;
+  border-bottom: 0 solid black;
+  transition: border-bottom-width 0.1s ease-in;
+  padding: '0 2px';
+  color: black;
+}
+
+.menuBarLink:visited {
+  color: black;
+}
+
+.menuBarLink:hover {
+  border-bottom-width: 2px;
+}
+
+.child {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.enterUp {
+  top: 0;
+  opacity: 0;
+  transition: top 0.5s ease-in, opacity 0.5s ease-in;
+}
+
+.enterUp.enterActive {
+  top: 50%;
+  opacity: 1;
+}
+
+.enterDown {
+  top: 100%;
+  opacity: 0;
+  transition: top 0.5s ease-in, opacity 0.5s ease-in;
+}
+
+.enterDown.enterActive {
+  top: 50%;
+  opacity: 1;
+}
+
+.leaveUp {
+  opacity: 1;
+  transition: top 0.5s ease-in, opacity 0.5s ease-in;
+}
+
+.leaveUp.leaveActive {
+  top: 100%;
+  opacity: 0;
+}
+
+.leaveDown {
+  opacity: 1;
+  transition: top 0.5s ease-in, opacity 0.5s ease-in;
+}
+
+.leaveDown.leaveActive {
+  top: 0;
+  opacity: 0;
+}
+
+.rctg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}

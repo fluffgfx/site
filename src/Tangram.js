@@ -34,7 +34,7 @@ const shapes = {
     [-375.5, 124, 270],
     [0, 707, 315],
     [375, -125, 90],
-    [275, 250, 0]
+    [275, 335, 0]
   ],
   [shapeTypes.RECTANGLE]: [
     [498, -1, 45],
@@ -55,9 +55,30 @@ const shapes = {
     [175, -75, 90],
     [480, -625, 90],
     [80, 305, 0]
+  ],
+  [shapeTypes.TIGER]: [
+    [-250, -250, 180],
+    [-350, 0, 315],
+    [0, 350, 45],
+    [-600, 0, 180],
+    [-425, 250, 270],
+    [75, -425, 90],
+    [353, 0, 45],
+    [300, 335, 0]
+  ],
+  [shapeTypes.BOAT]: [
+    [-250, -250, 135],
+    [-353, 2, 270],
+    [250, 244, 45],
+    [500, 244, 45],
+    [250, 243, 45],
+    [-171, 525, 0],
+    [625, 119, 45, true],
+    [430, 435, 0]
   ]
 }
 
+// TODO handle animation in non-ist environments
 export default class Logo extends Component {
   constructor (props) {
     super (props)

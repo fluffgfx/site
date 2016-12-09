@@ -1,3 +1,5 @@
+import { push } from 'react-router-redux'
+
 import shapes from './shapes'
 import actions from './actionTypes'
 
@@ -17,14 +19,14 @@ export const toCat = () => {
   return { type: actions.shape.SET_SHAPE, payload: shapes.CAT }  
 }
 
-export const sizeTo250 = () => {
-  return { type: actions.size.SET_SIZE, payload: 250 }
+export const toTiger = () => {
+  return { type: actions.shape.SET_SHAPE, payload: shapes.TIGER }
 }
 
-export const sizeTo500 = () => {
-  return { type: actions.size.SET_SIZE, payload: 500 }
+export const toBoat = () => {
+  return { type: actions.shape.SET_SHAPE, payload: shapes.BOAT }
 }
 
-export const sizeTo1000 = () => {
-  return { type: actions.size.SET_SIZE, payload: 1000 }
+export const goToProject = (n) => {
+  return push(`/project/${n}`)
 }

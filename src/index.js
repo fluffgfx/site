@@ -1,7 +1,7 @@
 import React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
-import { Router, Route, browserHistory } from 'react-router'
+import { Router, Route, browserHistory, IndexRoute } from 'react-router'
 import { createStore, combineReducers, compose, applyMiddleware } from 'redux'
 import { routerReducer, routerMiddleware, syncHistoryWithStore } from 'react-router-redux'
 
@@ -53,13 +53,29 @@ window.store = store
 
 const history = syncHistoryWithStore(browserHistory, store)
 
-import Landing from './Landing'
+import Wrapper from './Wrapper'
+import Intro from './Intro'
+import ProjectsWrapper from './ProjectsWrapper'
+import { toLogo, toBoat, toCat, toTiger } from './actions'
+import projects from './projects'
 require('./globals.scss')
 
 render(
   <Provider store={store}>
     <Router history={history} onUpdate={onUpdate}>
-      <Route path='/' component={Landing} />
+      <Route path='/' component={Wrapper}>
+        <IndexRoute onEnter={_ => { store.dispatch(toLogo()) }} component={Intro} />
+        <Route path='project/:id' onEnter={(nextState, replace) => {
+          const { id } = nextState.params
+          if (id < 0) { replace(`/project/${projects.length - 1}`) }
+          if (id >= projects.length) { replace(`/project/0`) }
+          switch (parseInt(id)) {
+            case 0: store.dispatch(toCat()); break;
+            case 1: store.dispatch(toTiger()); break;
+            case 2: store.dispatch(toBoat()); break;
+          }
+        }} component={ProjectsWrapper} />
+      </Route>
     </Router>
   </Provider>
 , document.getElementById('mount'))
