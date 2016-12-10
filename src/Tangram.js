@@ -102,6 +102,8 @@ export default class Logo extends Component {
       }
       rotator()
     }
+
+    window.addEventListener('resize', () => { this.forceUpdate() })
   }
 
   componentWillReceiveProps (nextProps) {
@@ -122,14 +124,14 @@ export default class Logo extends Component {
     const parentProps = ist ? {
       style: {
         transform: '' +
-          `scale(${(size - 40)/(landscape ? window.innerHeight : window.innerWidth)}) ` +
+          `scale(${(size)/(window.innerHeight)}) ` +
           `translate(${shapes[shape][7][0]}px, ${shapes[shape][7][1]}px) ` +
           `rotate(${shapes[shape][7][2]}deg)`,
         transition: 'transform 0.25s ease-in-out'
       }
     } : {
       transform: '' +
-        `scale(${(size - 40)/(landscape ? window.innerHeight : window.innerWidth)}) ` +
+        `scale(${(size)/(window.innerHeight)}) ` +
         `translate(${shapes[shape][7][0]}, ${shapes[shape][7][1]}) ` +
         `rotate(${shapes[shape][7][2]})`
     }

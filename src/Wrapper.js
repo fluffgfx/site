@@ -3,12 +3,14 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import VisibilitySensor from 'react-visibility-sensor'
 import RCTG from 'react-addons-css-transition-group'
+import Hammer, { Manager, Swipe } from 'hammerjs'
 
 import Tangram from './Tangram'
 import * as actions from './actions'
 import shapes from './shapes'
 import bg from './bg.jpg'
 import * as styles from './Wrapper.scss'
+import mobileCheck from './mobileCheck'
 
 const Spacer = () => (
   <div style={{ height: '100vh' }} />
@@ -48,16 +50,28 @@ export class Wrapper extends Component {
       }
     }
 
-    window.addEventListener('wheel', handleScroll)
-    window.addEventListener('scrollwheel', handleScroll)
+    if (!mobileCheck()) {
+      window.addEventListener('wheel', handleScroll)
+      window.addEventListener('scrollwheel', handleScroll)
+    } else {
+      // we're on mobile, use hammerjs
+      const hm = new Manager(document.getElementById('mount'))
+      hm.add(new Swipe({ event: 'swipeup', direction: Hammer.DIRECTION_UP }))
+      hm.add(new Swipe({ event: 'swipedown', direction: Hammer.DIRECTION_DOWN }))
+      hm.on('swipeup', e => { console.log('swipeup'); scrollDown() })
+      hm.on('swipedown', e => { console.log('swipedown'); scrollUp() })
+    }
+    
     this.setState({ scrollEnabled: true })
-
-    // TODO handle touchmove event
+    window.addEventListener('resize', () => { this.forceUpdate() })
   }
 
   render () {
     const { shape, size, children, location } = this.props
     const { transitionUp } = this.state
+    const mobile = mobileCheck() || window.innerWidth < window.innerHeight
+    const tangramSize = window.innerWidth < 1000 ? window.innerWidth / 2 : 500
+    console.log(tangramSize)
     return (
       <div
           style={{
@@ -106,18 +120,19 @@ export class Wrapper extends Component {
               top: 0,
               left: 0,
               display: 'inline-block',
-              width: '35%',
-              height: '100%'
+              width: mobile ? '100%' : '35%',
+              maxWidth: mobile ? null : '550px',
+              height: mobile ? `${tangramSize * 2}px` : '100%'
             }}>
             <div
               style={{
                 position: 'absolute',
                 top: '50%',
                 left: '50%',
-                transform: 'translate(-25%, -50%)'
+                transform: mobile ? 'translate(-50%, -50%)' : 'translate(-25%, -50%)'
               }}>
               <Tangram
-                size={size}
+                size={tangramSize}
                 shape={shape}
                 background={bg} />
             </div>
@@ -125,17 +140,16 @@ export class Wrapper extends Component {
           <div
             style={{
               position: 'absolute',
-              top: 0,
+              top: mobile ? `${tangramSize}px` : 0,
               right: 0,
               display: 'inline-block',
-              width: '65%',
-              height: '100%',
-              padding: '0 10%' }}>
-            
+              width: mobile ? '100%' : '65%',
+              height: mobile ? `calc(100% - ${tangramSize}px)` : '100%',
+              padding: mobile ? '10%' : '0 10%' }}>
             <div
               style={{
                 position: 'relative',
-                height: '100vh',
+                height: mobile ? '100%' : '100vh',
                 width: '100%',
                 top: 0
               }}>
