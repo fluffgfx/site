@@ -2,8 +2,8 @@ import React from 'react'
 
 import { menuBarLink } from './Wrapper.scss'
 
-export default [
-  ({ className }) => (
+export default {
+  hoot: ({ className }) => (
     <div className={className}>
       <h1
         style={{
@@ -50,7 +50,7 @@ export default [
           style={{ fontSize: '36px' }}>Go to the site now</a>
       </div>
     </div>),
-  ({ className }) => (
+  fs: ({ className }) => (
     <div className={className}>
       <h1
         style={{
@@ -83,7 +83,7 @@ export default [
            where artists of all varieties can share their works. We anticipate
            a public release some time in late 2017.</p>
     </div>),
-  ({ className }) => (
+  github: ({ className }) => (
     <div className={className}>
       <h1
         style={{
@@ -128,4 +128,4 @@ export default [
           style={{ fontSize: '36px' }}>View my GH profile</a>
       </div>
     </div>)
-]
+}

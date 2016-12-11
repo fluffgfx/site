@@ -5,6 +5,6 @@ import projects from './projects'
 
 export default ({ params, className }) => {
   const { id } = params
-  const P = projects[parseInt(id)]
+  const P = projects[id]
   return <P className={className} />
 }

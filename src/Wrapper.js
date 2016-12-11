@@ -11,6 +11,7 @@ import shapes from './shapes'
 import bg from './bg.jpg'
 import * as styles from './Wrapper.scss'
 import mobileCheck from './mobileCheck'
+import projects from './projects'
 
 const Spacer = () => (
   <div style={{ height: '100vh' }} />
@@ -28,14 +29,17 @@ export class Wrapper extends Component {
   componentDidMount () {
     const scrollDown = () => {
       this.setState({ transitionUp: false }, () => {
-        this.props.goToProject(this.props.params.id ? parseInt(this.props.params.id) + 1 : 0)
+        this.props.goToProject(this.props.params.id
+          ? Object.keys(projects)[Object.keys(projects).indexOf(this.props.params.id) + 1] || Object.keys(projects)[0]
+          : Object.keys(projects)[0])
       })
     }
 
     const scrollUp = () => {
       this.setState({ transitionUp: true }, () => {
-        console.log('leaving up')
-        if (this.props.params.id) this.props.goToProject(parseInt(this.props.params.id) - 1)
+        if (this.props.params.id) this.props.goToProject(
+          Object.keys(projects)[Object.keys(projects).indexOf(this.props.params.id) - 1] ||
+          Object.keys(projects)[Object.keys(projects).length - 1])
       })
     }
 
@@ -96,13 +100,15 @@ export class Wrapper extends Component {
                 left: '70px',
                 transform: 'translateY(-50%)'
               }}>
-              <h1
-                style={{
-                  fontFamily: 'Proxima Nova W01',
-                  fontWeight: 300,
-                  textAlign: 'left',
-                  fontSize: '18px'
-                }}>Kyle Fahringer <i>(vulpine)</i></h1>
+              <Link to='/' className={styles.menuBarLink}>
+                <h1
+                  style={{
+                    fontFamily: 'Proxima Nova W01',
+                    fontWeight: 300,
+                    textAlign: 'left',
+                    fontSize: mobile ? '36px' : '24px'
+                  }}>Kyle Fahringer <i>(vulpine)</i></h1>
+              </Link>
             </div>
             <div
               style={{
@@ -111,7 +117,9 @@ export class Wrapper extends Component {
                 right: '20px',
                 transform: 'translateY(-50%)'
               }}>
-              {/* menu bar links */}
+              <a href="mailto:kyle@vulpine.me" className={styles.menuBarLink}>
+                Contact Me
+              </a>
             </div>
           </div>
           <div

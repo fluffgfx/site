@@ -85,7 +85,9 @@ export default class Logo extends Component {
     console.log(this.props)
     this.state = {
       shape: this.props.rotate ? this.props.shapes[0] : this.props.shape,
-      currentIndex: 0
+      currentIndex: 0,
+      ist: bowser.check({ chrome: "16" }, true),
+      landscape: window.innerWidth > window.innerHeight
     }
   }
 
@@ -103,7 +105,9 @@ export default class Logo extends Component {
       rotator()
     }
 
-    window.addEventListener('resize', () => { this.forceUpdate() })
+    window.addEventListener('resize', () => {
+      this.setState({ landscape: window.innerWidth > window.innerHeight })
+    })
   }
 
   componentWillReceiveProps (nextProps) {
@@ -116,11 +120,9 @@ export default class Logo extends Component {
 
   render () {
     const { size, background, ...props } = this.props
-    const { shape } = this.state
-    const landscape = window.innerWidth > window.innerHeight
+    const { shape, ist, landscape } = this.state
     const id = 'TangramMaskPath'
     if (!shape) return null
-    const ist = bowser.check({ chrome: "16" }, true) // inline style transform
     const parentProps = ist ? {
       style: {
         transform: '' +

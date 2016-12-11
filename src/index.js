@@ -67,12 +67,12 @@ render(
         <IndexRoute onEnter={_ => { store.dispatch(toLogo()) }} component={Intro} />
         <Route path='project/:id' onEnter={(nextState, replace) => {
           const { id } = nextState.params
-          if (id < 0) { replace(`/project/${projects.length - 1}`) }
-          if (id >= projects.length) { replace(`/project/0`) }
-          switch (parseInt(id)) {
-            case 0: store.dispatch(toCat()); break;
-            case 1: store.dispatch(toTiger()); break;
-            case 2: store.dispatch(toBoat()); break;
+          if (id < 0) { replace(`/project/${projects[Object.keys(projects)[Object.keys(projects).length - 1]]}`) }
+          if (id >= Object.keys(projects).length) { replace(`/project/${Object.keys(projects)[0]}`) }
+          switch (id) {
+            case 'hoot': store.dispatch(toCat()); break;
+            case 'fs': store.dispatch(toTiger()); break;
+            case 'github': store.dispatch(toBoat()); break;
           }
         }} component={ProjectsWrapper} />
       </Route>
