@@ -63,7 +63,7 @@ require('./globals.scss')
 render(
   <Provider store={store}>
     <Router history={history} onUpdate={onUpdate}>
-      <Route path='/whatcolorisit' onEnter={_ => { window.location = "color.vulpine.me" }} component={_ => null} />
+      <Route path='/whatcolorisit' onEnter={_ => { window.location = "http://whatcolorisit.vulpine.me" }} component={_ => null} />
       <Route path='/' component={Wrapper}>
         <IndexRoute onEnter={_ => { store.dispatch(toLogo()) }} component={Intro} />
         <Route path='project/:id' onEnter={(nextState, replace) => {
